@@ -4,7 +4,7 @@ Versions
 
 Version | Author | Date | Description |
 --- | --- | --- | --- |
-1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching - Scale Up |
+1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching |
 
 Description
 
