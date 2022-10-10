@@ -1,0 +1,204 @@
+description: |
+  # Systems Manager automation document for updating SAP HANA databases. 
+  ------------------------------------------
+
+  SSM Document Parameters:
+  --
+
+  HANADBVersion
+  - Target version of the HANA database to be applied.
+
+  CPUArchitecture
+  - Architecture of the Processor (Currently available in x86 only)
+
+  InstanceId
+  - This will be provided based on the Tags selected to filter the EC2 instances in which to execute or provided via StringList manually
+
+  SSM Document Details:
+  --
+
+  This SSM document will patch the SAP HANA database to the target version. 
+
+  ** Warning: ** This document will stop the HANA database and then start it. This has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
+schemaVersion: '0.3'
+assumeRole: null
+parameters:
+  HANADBVersion:
+    type: String
+    description: (Required) Target version of the HANA database to be applied
+    default: ''
+    allowedValues:
+      - 2.0/SP04/48
+      - 2.0/SP04/48p6
+      - 2.0/SP05/59
+      - 2.0/SP05/59p1
+      - 2.0/SP05/59p3
+      - 2.0/SP05/59p4
+      - 2.0/SP05/59p5
+      - 2.0/SP06/60
+      - 2.0/SP06/61
+      - 2.0/SP06/62
+      - 2.0/SP06/63
+      - 2.0/SP06/64
+  CPUArchitecture:
+    type: String
+    description: (Required) Architecture of the Processor (Currently available in x86 only)
+    default: linuxx86
+    allowedValues:
+      - linuxx86
+  HanaMediaDownload:
+    type: String
+    description: 'Will the HANA media for patching be downloaded from S3? If No, it is expected that the media exist and be accessible on the server.'
+    default: ''
+    allowedValues:
+      - Download
+      - Local
+  InstanceId:
+    type: StringList
+    description: (Required) EC2 Instance(s) in which to execute HANA Database Patching.
+  HanaUpgradeBaseDir:
+    type: String
+    description: Directory dedicated for HANA database media
+    default: hdbupgrade
+  HanaVersionReport:
+    type: String
+    description: Generate .csv file containing HANA version and upload to Amazon S3 bucket
+    default: 'Y'
+    allowedValues:
+      - 'Y'
+      - 'N'
+mainSteps:
+  - name: HDB_AWS_PATCH_BRANCH_V1
+    description: Decide which step to execute depending on whether the HANA media will be downloaded from S3 or not.
+    action: 'aws:branch'
+    inputs:
+      Choices:
+        - NextStep: HDB_AWS_PATCH_DOWNLOAD
+          Variable: '{{ HanaMediaDownload }}'
+          StringEquals: Download
+        - NextStep: HDB_AWS_PATCH_UPDATE
+          Variable: '{{ HanaMediaDownload }}'
+          StringEquals: Local
+    timeoutSeconds: 600
+  - name: HDB_AWS_PATCH_DOWNLOAD
+    description: Download the SAP HANA media software from Amazon S3 bucket and uncompress it.
+    action: 'aws:runCommand'
+    timeoutSeconds: 21600
+    onFailure: Abort
+    nextStep: HDB_AWS_PATCH_UPDATE
+    inputs:
+      DocumentName: AWS-RunShellScript
+      InstanceIds: '{{ InstanceId }}'
+      Parameters:
+        commands:
+          - |
+            #!/bin/bash
+            UPGBUCKET=$(aws secretsmanager get-secret-value --secret-id {ARN for SAP HANA Software S3 Bucket} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            HanaMediaCheck=$(aws s3 ls s3://$UPGBUCKET/{{CPUArchitecture}}/hanadb/{{HANADBVersion}}/ --recursive --summarize | grep "Total Objects: " | sed 's/[^0-9]*//g')
+            if [ "$HanaMediaCheck" -eq "0" ]; then
+              exit 1
+            else
+              echo "I have found Files. Proceeding to next step"
+            fi
+            DIR="/{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/{{HANADBVersion}}"
+            if [ -d "$DIR" ]; then
+              echo "The directory already exists, aborting execution."
+              exit 1
+            else
+              echo "The directory does not exist, proceeding to next step."
+              mkdir -p /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/{{HANADBVersion}}
+              aws s3 sync s3://$UPGBUCKET/{{CPUArchitecture}}/hanadb/{{HANADBVersion}} /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/
+              aws s3 cp s3://$UPGBUCKET/{{CPUArchitecture}}/SAPCAR.EXE /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/
+              chmod -R 770 /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/SAPCAR.EXE
+              SARFILE=$(ls -lart /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/ | grep SAR | awk '{print $9}')
+              /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/SAPCAR.EXE -xvf /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/$SARFILE -manifest SIGNATURE.SMF -R  /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/{{HANADBVersion}}/
+            fi
+  - name: HDB_AWS_PATCH_UPDATE
+    description: Patch the HANA database. The HANA media must exist on the server and be accessible
+    action: 'aws:runCommand'
+    timeoutSeconds: 21600
+    onFailure: Abort
+    nextStep: HDB_AWS_PATCH_CLEANUP
+    inputs:
+      DocumentName: AWS-RunShellScript
+      InstanceIds: '{{ InstanceId }}'
+      Parameters:
+        commands:
+          - |
+            #!/bin/bash
+            TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+            INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id -H "X-aws-ec2-metadata-token: $TOKEN" |awk '{print $1}')
+            DB_SID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].Tags[*]' --output=text |grep DBSid | awk '{print $2}')
+            UPGUSER=$(aws secretsmanager get-secret-value --secret-id {ARN for SAP HANA Upgrade username} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            PatchKey=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].Tags[*]' --output=text |grep HanaPatchGroup | awk '{print $2}')
+            if [[ "$PatchKey" == "DEV" ]]; then UPGPASSWORD=$(aws secretsmanager get-secret-value --secret-id {ARN for DEV SAP HANA Upgrade User Password} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            elif [[ "$PatchKey" == "QAS" ]]; then UPGPASSWORD=$(aws secretsmanager get-secret-value --secret-id {ARN for QAS SAP HANA Upgrade User Password} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            elif [[ "$PatchKey" == "PRD" ]]; then UPGPASSWORD=$(aws secretsmanager get-secret-value --secret-id {ARN for PRD SAP HANA Upgrade User Password} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            elif [[ "$PatchKey" == "SBX" ]]; then UPGPASSWORD=$(aws secretsmanager get-secret-value --secret-id {ARN for SBX SAP HANA Upgrade User Password} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+            else 
+              exit 1
+            fi
+            SIDuser=${DB_SID,,}adm
+            HDBOLD=$(sudo su - $SIDuser -c 'HDB version' |grep -i version: | awk '{print $2}')
+            DIR="/{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/{{HANADBVersion}}/SAP_HANA_DATABASE/"
+            if [ -d "$DIR" ]; then
+              echo "Validated that the HANA media directory exists, proceeding to patching HANA database..."
+            else
+              exit 1
+            fi
+            /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb/{{HANADBVersion}}/SAP_HANA_DATABASE/hdblcm --action=update --batch --sid=$DB_SID --system_user=$UPGUSER --system_user_password=$UPGPASSWORD
+            HDBNEW=$(sudo su - $SIDuser -c 'HDB version' |grep -i version: | awk '{print $2}')
+            if [[ "$HDBOLD" == "$HDBNEW" ]]; then
+             exit 1
+            else
+             exit 0
+            fi
+  - name: HDB_AWS_PATCH_CLEANUP
+    description: Upload HANA Database Version information to S3
+    action: 'aws:runCommand'
+    timeoutSeconds: 600
+    onFailure: Abort
+    nextStep: HDB_AWS_PATCH_REPORT
+    inputs:
+      DocumentName: AWS-RunShellScript
+      InstanceIds: '{{ InstanceId }}'
+      Parameters:
+        commands:
+          - |
+            #!/bin/bash
+            MEDIA_STRATEGY={{HanaMediaDownload}}
+            if [ "$MEDIA_STRATEGY" == "Download" ]; then
+              echo "I will perform a cleanup of media downloaded from Amazon S3"
+              rm -rf /{{HanaUpgradeBaseDir}}/x-sap-lnx-patch-hanadb
+            else
+              echo "This step is not required as media was not downloaded from an Amazon S3 bucket"
+            fi
+  - name: HDB_AWS_PATCH_REPORT
+    description: Upload HANA Database Version information to S3
+    action: 'aws:runCommand'
+    timeoutSeconds: 600
+    onFailure: Abort
+    inputs:
+      DocumentName: AWS-RunShellScript
+      InstanceIds: '{{ InstanceId }}'
+      Parameters:
+        commands:
+          - |
+            #!/bin/bash
+            HDB_REPORT={{HanaVersionReport}}
+            if [ "$HDB_REPORT" == "Y" ]; then
+              TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+              INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id -H "X-aws-ec2-metadata-token: $TOKEN" |awk '{print $1}')
+              DB_SID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].Tags[*]' --output=text |grep DBSid | awk '{print $2}')
+              HANA_REPO_BUCKET=$(aws secretsmanager get-secret-value --secret-id {ARN for SAP HANA version repository S3 bucket} --query SecretString --output text | cut -d: -f2 | tr -d \"})
+              SIDuser=${DB_SID,,}adm
+              HDBVER=$(sudo su - $SIDuser -c 'HDB version' |grep -i version: | awk '{print $2}')
+              CHECK_TIME=$(date -I)
+              touch /var/lib/amazon/ssm/$INSTANCE_ID/inventory/custom/$DB_SID.csv
+              echo SID,Version,Check_Date >> /var/lib/amazon/ssm/$INSTANCE_ID/inventory/custom/$DB_SID.csv
+              echo $DB_SID,$HDBVER,$CHECK_TIME >> /var/lib/amazon/ssm/$INSTANCE_ID/inventory/custom/$DB_SID.csv
+              aws s3 cp /var/lib/amazon/ssm/$INSTANCE_ID/inventory/custom/$DB_SID.csv s3://$HANA_REPO_BUCKET/HANA/
+              rm /var/lib/amazon/ssm/$INSTANCE_ID/inventory/custom/$DB_SID.csv
+            else
+              echo "Nothing to execute"
+            fi
