@@ -13,6 +13,8 @@ This sample code is used to create an AWS Systems Manager (SSM) automation docum
 This sample code is a starting point for customers to understand how to build SSM automation documents that can help benefit the operation of SAP HANA workloads on AWS cloud.
 
 :thought_balloon: Automation code execution diagram
+  
+ The diagram below shows the execution flow of each step of the SSM automation document in the sample code file (sap-hana-patch-sample.yml) 
 
 ![HANA_AUTO_PATCH_EXEC_DIAG](https://user-images.githubusercontent.com/115275673/195148216-d52e5db9-a43e-4935-a854-65224376e6be.jpg)
 
