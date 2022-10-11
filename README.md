@@ -11,7 +11,11 @@ Description
 This sample code is used to create an AWS Systems Manager (SSM) automation document that will automatically patch an SAP HANA database. Before implementing  this automation it is highly recommended to read the SAP Technical Documentation: <insert link here>
   
 This sample code is a starting point for customers to understand how to build SSM automation documents that can help benefit the operation of SAP HANA workloads on AWS cloud.
-  
+
+:thought_balloon: Automation code execution diagram
+
+![HANA_AUTO_PATCH_EXEC_DIAG](https://user-images.githubusercontent.com/115275673/195148216-d52e5db9-a43e-4935-a854-65224376e6be.jpg)
+
 :stop_sign: !! Important !!
   
 Prior to uploading the code into AWS SSM, it is required to adapt the {ARN} related fields to your specific ARN details. Refusing to do so will result in errors during the execution of the SSM document
