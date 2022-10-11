@@ -15,8 +15,10 @@ This sample code is a starting point for customers to understand how to build SS
 :thought_balloon: Automation code execution diagram
   
  The diagram below shows the execution flow of each step of the SSM automation document in the sample code file (sap-hana-patch-sample.yml) 
+ 
 
-![HANA_AUTO_PATCH_EXEC_DIAG](https://user-images.githubusercontent.com/115275673/195148216-d52e5db9-a43e-4935-a854-65224376e6be.jpg)
+![HANA_AUTO_PATCH_EXEC_DIAG](https://user-images.githubusercontent.com/115275673/195149355-2a712b84-7db5-4e4a-af2b-12d23929af6e.jpg)
+
 
 :stop_sign: !! Important !!
   
