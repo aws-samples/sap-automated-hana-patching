@@ -20,11 +20,11 @@ This sample code is a starting point for customers to understand how to build SS
 ![HANA_AUTO_PATCH_EXEC_DIAG](https://user-images.githubusercontent.com/115275673/195149355-2a712b84-7db5-4e4a-af2b-12d23929af6e.jpg)
 
 
-:stop_sign: !! Important !!
+:stop_sign: !! Important !! :stop_sign:
   
 Prior to uploading the code into AWS SSM, it is required to adapt the {ARN} related fields to your specific ARN details. Refusing to do so will result in errors during the execution of the SSM document
   
-:no_entry_sign: Not created
+:no_entry_sign: Not created :no_entry_sign:
   
 The code does not create any resources outside of the SSM document into the AWS account. There are several pre-requisites required to execute the SSM automation document as is (without adapting to your specific requirements)
   
@@ -42,10 +42,10 @@ HanaPatchGroup = <DEV|QAS|PRD|SBX>
   
 * [AWS IAM] : The SSM automation document requires permissions to allow each service to interact with eachother. The AWS technical documentation provides examples of policies to help with the IAM setup. We do recommend you build IAM resources with the principle of least privilege in mind.
 
-:rotating_light: Limitations
+:rotating_light: Limitations :rotating_light:
   
 The SSM document sample code patches only the SAP HANA database, and no additional components. For SAP HANA databases running additional components (i.e. Application Function Library) the code will not work. 
   
-:warning: Usage
+:warning: Usage :warning:
   
 This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
