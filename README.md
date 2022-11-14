@@ -5,7 +5,8 @@ Versions
 Version | Author | Date | Description |
 --- | --- | --- | --- |
 1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching |
-1.1 | J. Bozelli | 13 November 2022 | Updated code to reflect new HANA revisioned and added details on manual code updates required |
+1.1 | J. Bozelli | 12 November 2022 | Updated code to reflect new HANA revisions and added details on manual code updates required |
+1.2 | A. Fellipe | 12 November 2022 | Revision and minor corrections to code/descriptions |
 
 Description
 
