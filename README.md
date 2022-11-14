@@ -52,6 +52,7 @@ The SSM document sample code patches only the SAP HANA database, and no addition
 This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
 
 :construction: Updates Required :construction:
+
 The following must be updated in the sample code YAML in order to ensure the code can run "out-of-the-box" 
 
 {ARN for SAP HANA Software S3 Bucket} - Must be updated to contain the ARN of the S3 bucket where you are storing the SAP HANA media software
