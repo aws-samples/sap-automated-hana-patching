@@ -53,12 +53,18 @@ This document has the potential to stop critical systems. Please ensure a valid 
 
 :construction: Updates Required :construction:
 
-The following must be updated in the sample code YAML in order to ensure the code can run "out-of-the-box" 
+The following must be updated in the sample code YAML in order to ensure the code can run "out-of-the-box":
 
 {ARN for SAP HANA Software S3 Bucket} - Must be updated to contain the ARN of the S3 bucket where you are storing the SAP HANA media software
+  
 {ARN for SAP HANA Upgrade username} - Must be updated to contain the ARN of the AWS Secret which has the user ID used to update SAP HANA database
+  
 {ARN for DEV SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Development
+  
 {ARN for QAS SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Quality
+  
 {ARN for PRD SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Production
+  
 {ARN for SBX SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Sandbox
+  
 {ARN for SAP HANA version repository S3 bucket} - Must be updated to contain the ARN of the S3 bucket where you are storing the SAP HANA database revision versions
