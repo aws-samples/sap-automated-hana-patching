@@ -46,6 +46,6 @@ HanaPatchGroup = <DEV|QAS|PRD|SBX>
   
 The SSM document sample code patches only the SAP HANA database, and no additional components. For SAP HANA databases running additional components (i.e. Application Function Library) the code will not work. 
   
-:warning: Usage :warning:
+:warning: Usage :warning: 
   
 This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
