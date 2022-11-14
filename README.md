@@ -5,6 +5,7 @@ Versions
 Version | Author | Date | Description |
 --- | --- | --- | --- |
 1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching |
+1.1 | J. Bozelli | 13 November 2022 | Updated code to reflect new HANA revisioned and added details on manual code updates required |
 
 Description
 
@@ -49,3 +50,14 @@ The SSM document sample code patches only the SAP HANA database, and no addition
 :warning: Usage :warning: 
   
 This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
+
+:construction: Updates Required :construction:
+The following must be updated in the sample code YAML in order to ensure the code can run "out-of-the-box" 
+
+{ARN for SAP HANA Software S3 Bucket} - Must be updated to contain the ARN of the S3 bucket where you are storing the SAP HANA media software
+{ARN for SAP HANA Upgrade username} - Must be updated to contain the ARN of the AWS Secret which has the user ID used to update SAP HANA database
+{ARN for DEV SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Development
+{ARN for QAS SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Quality
+{ARN for PRD SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Production
+{ARN for SBX SAP HANA Upgrade User Password} - Must be updated to contain the ARN of the AWS Secret which has the password for the user ID used to update SAP HANA database for Sandbox
+{ARN for SAP HANA version repository S3 bucket} - Must be updated to contain the ARN of the S3 bucket where you are storing the SAP HANA database revision versions
