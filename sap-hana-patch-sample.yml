@@ -91,6 +91,9 @@ mainSteps:
     inputs:
       DocumentName: AWS-RunShellScript
       InstanceIds: '{{ InstanceId }}'
+      CloudWatchOutputConfig: 
+        CloudWatchOutputEnabled: true 
+        CloudWatchLogGroupName: SSMHanaAutomatedPatchLogs
       Parameters:
         commands:
           - |
@@ -124,6 +127,9 @@ mainSteps:
     inputs:
       DocumentName: AWS-RunShellScript
       InstanceIds: '{{ InstanceId }}'
+      CloudWatchOutputConfig: 
+        CloudWatchOutputEnabled: true 
+        CloudWatchLogGroupName: SSMHanaAutomatedPatchLogs
       Parameters:
         commands:
           - |
@@ -164,6 +170,9 @@ mainSteps:
     inputs:
       DocumentName: AWS-RunShellScript
       InstanceIds: '{{ InstanceId }}'
+      CloudWatchOutputConfig: 
+        CloudWatchOutputEnabled: true 
+        CloudWatchLogGroupName: SSMHanaAutomatedPatchLogs
       Parameters:
         commands:
           - |
@@ -183,6 +192,9 @@ mainSteps:
     inputs:
       DocumentName: AWS-RunShellScript
       InstanceIds: '{{ InstanceId }}'
+      CloudWatchOutputConfig: 
+        CloudWatchOutputEnabled: true 
+        CloudWatchLogGroupName: SSMHanaAutomatedPatchLogs
       Parameters:
         commands:
           - |
