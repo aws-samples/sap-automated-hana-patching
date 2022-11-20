@@ -51,7 +51,7 @@ The SSM document sample code patches only the SAP HANA database, and no addition
 
 :speech_balloon: CloudWatch Logging :speech_balloon:	
 
-The SSM automation document will output logs to CloudWatch Log Groups. The log group in the sample code is SSMHanaAutomatedPatchLogs. To alter to a log group of your choice, update the value of the parameter CloudWatchLogGroupName in each step of the automation document, except the first one.
+The SSM automation document will output logs to CloudWatch Log Groups. The log group in the sample code is SSMHanaAutomatedPatchLogs. To alter to a log group of your choice, update the value of the parameter CloudWatchLogGroupName in each step of the automation document where this parameter is present.
   
 :warning: Usage :warning: 
   
