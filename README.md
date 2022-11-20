@@ -7,6 +7,7 @@ Version | Author | Date | Description |
 1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching |
 1.1 | J. Bozelli | 12 November 2022 | Updated code to reflect new HANA revisions and added details on manual code updates required |
 1.2 | A. Fellipe | 12 November 2022 | Revision and minor corrections to code/descriptions |
+1.3 | J. Bozelli | 19 November 2022 | Updated code to output logs to CloudWatch |
 
 Description
 
@@ -47,6 +48,10 @@ HanaPatchGroup = <DEV|QAS|PRD|SBX>
 :rotating_light: Limitations :rotating_light:
   
 The SSM document sample code patches only the SAP HANA database, and no additional components. For SAP HANA databases running additional components (i.e. Application Function Library) the code will not work. 
+
+:speech_balloon: CloudWatch Logging :speech_balloon:	
+
+The SSM automation document will output logs to CloudWatch Log Groups. The log group in the sample code is SSMHanaAutomatedPatchLogs. To alter to a log group of your choice, update the value of the parameter CloudWatchLogGroupName in each step of the automation document, except the first one.
   
 :warning: Usage :warning: 
   
