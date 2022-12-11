@@ -47,7 +47,7 @@ HanaPatchGroup = <DEV|QAS|PRD|SBX>
 
 :rotating_light: Limitations :rotating_light:
   
-The SSM document sample code patches only the SAP HANA database, and no additional components. For SAP HANA databases running additional components (i.e. Application Function Library) the code will not work. 
+The SSM document sample code patches only the SAP HANA database, and no additional components. For SAP HANA databases running additional components (i.e. Application Function Library) additional steps are required to incorporate patching the additional components into the SSM automation document. 
 
 :speech_balloon: CloudWatch Logging :speech_balloon:	
 
