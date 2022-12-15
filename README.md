@@ -8,6 +8,7 @@ Version | Author | Date | Description |
 1.1 | J. Bozelli | 12 November 2022 | Updated code to reflect new HANA revisions and added details on manual code updates required |
 1.2 | A. Fellipe | 12 November 2022 | Revision and minor corrections to code/descriptions |
 1.3 | J. Bozelli | 19 November 2022 | Updated code to output logs to CloudWatch |
+1.4 | A. Fellipe | 15 December 2022 | Updated Diagram |
 
 Description
 
@@ -29,7 +30,7 @@ Prior to uploading the code into AWS SSM, it is required to adapt the {ARN} rela
   
 :no_entry_sign: Not created :no_entry_sign:
   
-The code does not create any resources outside of the SSM document into the AWS account. There are several pre-requisites required to execute the SSM automation document as is (without adapting to your specific requirements)
+The code does not create any resources outside of the SSM document into the AWS account. There are several pre-requisites required to run the SSM automation document as is (without adapting to your specific requirements)
   
 * [Amazon S3 Bucket] : It may be required to host the SAP HANA database media files into an Amazon S3 bucket, depending on your execution method for the SSM automation document. 
   
@@ -55,7 +56,7 @@ The SSM automation document will output logs to CloudWatch Log Groups. The log g
   
 :warning: Usage :warning: 
   
-This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are executed prior to patching the database.
+This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are run prior to patching the database.
 
 :construction: Updates Required :construction:
 
