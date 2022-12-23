@@ -4,7 +4,7 @@ Versions
 
 Version | Author | Date | Description |
 --- | --- | --- | --- |
-1.0 | J. Bozelli & A. Fellipe | 3 Jan 2022 | Initial Version - HANA Automated Patching |
+1.0 | J. Bozelli & A. Fellipe | 3 Jan 2023 | Initial Version - HANA Automated Patching |
 
 Description
 
