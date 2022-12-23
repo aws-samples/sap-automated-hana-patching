@@ -4,11 +4,7 @@ Versions
 
 Version | Author | Date | Description |
 --- | --- | --- | --- |
-1.0 | J. Bozelli | 10 October 2022 | Initial Version - HANA Automated Patching |
-1.1 | J. Bozelli | 12 November 2022 | Updated code to reflect new HANA revisions and added details on manual code updates required |
-1.2 | A. Fellipe | 12 November 2022 | Revision and minor corrections to code/descriptions |
-1.3 | J. Bozelli | 19 November 2022 | Updated code to output logs to CloudWatch |
-1.4 | A. Fellipe | 15 December 2022 | Updated Diagram |
+1.0 | J. Bozelli & A. Fellipe | 3 Jan 2022 | Initial Version - HANA Automated Patching |
 
 Description
 
