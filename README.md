@@ -8,7 +8,7 @@ Version | Author | Date | Description |
 
 Description
 
-This sample code is used to create an AWS Systems Manager (SSM) automation document that will patch an SAP HANA database. Before implementing  this automation it is highly recommended to read the SAP Technical Documentation: https://aws.amazon.com/sap/docs/sap-hana/automated-patching.html
+This sample code is used to create an AWS Systems Manager (SSM) automation document that will patch an SAP HANA database. Before implementing  this automation it is highly recommended to read the SAP Technical Documentation: https://docs.aws.amazon.com/sap/latest/sap-hana/automated-patching.html
   
 This sample code is a starting point for customers to understand how to build SSM automation documents that can help benefit the operation of SAP HANA workloads on AWS cloud.
 
