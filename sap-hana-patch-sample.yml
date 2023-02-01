@@ -32,6 +32,7 @@ parameters:
       - 2.0/SP04/48p6
       - 2.0/SP05/59
       - 2.0/SP05/59p1
+      - 2.0/SP05/59p2
       - 2.0/SP05/59p3
       - 2.0/SP05/59p4
       - 2.0/SP05/59p5
@@ -42,6 +43,7 @@ parameters:
       - 2.0/SP06/63
       - 2.0/SP06/64
       - 2.0/SP06/65
+      - 2.0/SP06/66
   CPUArchitecture:
     type: String
     description: (Required) Architecture of the Processor (Currently available in x86 only)
