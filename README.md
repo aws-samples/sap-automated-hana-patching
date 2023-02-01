@@ -32,6 +32,7 @@ The code does not create any resources outside of the SSM document into the AWS 
   
 * [EC2 Instance Tags] : The EC2 instances hosting the SAP HANA database workloads require at least two tags to run successfully:
 DBSid = <SID>
+
 HanaPatchGroup = <DEV|QAS|PRD|SBX>
 
 * [AWS Secrets Manager] : To allow for reusability of certain parameters, the SSM document will fetch certain inputs from AWS Secrets Manager. The details of the required Secrets can be found in the AWS technical documentation specified in the beginning of this file.
