@@ -31,9 +31,8 @@ The code does not create any resources outside of the SSM document into the AWS 
 * [Amazon S3 Bucket] : It may be required to host the SAP HANA database media files into an Amazon S3 bucket, depending on your execution method for the SSM automation document. 
   
 * [EC2 Instance Tags] : The EC2 instances hosting the SAP HANA database workloads require at least two tags to run successfully:
-DBSid = <SID>
-
-HanaPatchGroup = <DEV|QAS|PRD|SBX>
+DBSid = {SID}
+HanaPatchGroup = {DEV|QAS|PRD|SBX}
 
 * [AWS Secrets Manager] : To allow for reusability of certain parameters, the SSM document will fetch certain inputs from AWS Secrets Manager. The details of the required Secrets can be found in the AWS technical documentation specified in the beginning of this file.
 
