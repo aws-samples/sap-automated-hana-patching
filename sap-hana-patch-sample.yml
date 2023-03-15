@@ -44,6 +44,7 @@ parameters:
       - 2.0/SP06/64
       - 2.0/SP06/65
       - 2.0/SP06/66
+      - 2.0/SP06/67
   CPUArchitecture:
     type: String
     description: (Required) Architecture of the Processor (Currently available in x86 only)
