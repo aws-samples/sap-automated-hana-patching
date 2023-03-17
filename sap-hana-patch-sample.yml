@@ -165,7 +165,7 @@ mainSteps:
              exit 0
             fi
   - name: HDB_AWS_PATCH_CLEANUP
-    description: Upload HANA Database Version information to S3
+    description: Cleanup files downloaded from S3 (if Download = Y)
     action: 'aws:runCommand'
     timeoutSeconds: 600
     onFailure: Abort
