@@ -57,7 +57,7 @@ The SSM automation document will output logs to CloudWatch Log Groups. The log g
   
 :warning: Usage :warning: 
   
-This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are run prior to patching the database.
+This document has the potential to stop critical systems. Please ensure a valid database backup exists and all dependent applications are stopped. For systems with SAP HSR and/or clustered enabled, please make sure the appropriate pre-steps are run prior to patching the database. This document allows you to either run the update directly or run the "[Prepare]"(https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/bbbcf591d94b4dbea745bf2846f9df37.html) 
 
 :construction: Updates Required :construction:
 
