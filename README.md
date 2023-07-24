@@ -7,6 +7,7 @@ Version | Author | Date | Description |
 1.0 | J. Bozelli & A. Fellipe | 1 Feb 2023 | Initial Version - HANA Automated Patching |
 1.1 | J. Bozelli | 15 Mar 2023 | Added HANA 2.0 SP06 Revision 67 as a target |
 1.2 | J. Bozelli | 10 Apr 2023 | Added HANA 2.0 SP07 Revision 00 as a target |
+1.3 | J. Bozelli | 24 Jul 2023 | Added "Prepare" as an option and local SAPCAR |
 
 
 Description
