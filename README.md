@@ -14,7 +14,7 @@ Description
 
 This sample code is used to create an AWS Systems Manager (SSM) automation document that will patch an SAP HANA database. Before implementing  this automation it is highly recommended to read the SAP Technical Documentation: https://docs.aws.amazon.com/sap/latest/sap-hana/automated-patching.html
   
-This sample code is a starting point for customers to understand how to build SSM automation documents that can help benefit the operation of SAP HANA workloads on AWS cloud.
+This sample code is a starting point for customers to build SSM automation documents that can benefit the operation of SAP workloads on AWS cloud.
 
 :thought_balloon: Automation code execution diagram
   
@@ -30,16 +30,16 @@ Prior to uploading the code into AWS SSM, it is required to adapt the {ARN} rela
   
 :no_entry_sign: Not created :no_entry_sign:
   
-The code does not create any resources outside of the SSM document into the AWS account. There are several pre-requisites required to run the SSM automation document as is (without adapting to your specific requirements)
+The code does not create any resources outside of the SSM document into the AWS account. The below resources are required to run the SSM automation document as is (without adapting to your specific requirements)
   
 * [Amazon S3 Bucket] : It may be required to host the SAP HANA database media files into an Amazon S3 bucket, depending on your execution method for the SSM automation document. 
   
-* [EC2 Instance Tags] : The EC2 instances hosting the SAP HANA database workloads require at least two tags to run successfully:
+* [EC2 Instance Tags] : The EC2 instances hosting the SAP HANA database workloads require two tags to run successfully:
 DBSid = {SID} & HanaPatchGroup = {DEV|QAS|PRD|SBX}
 
 * [EC2 Instance | AWS CLI] : Ensure that AWS CLI is properly configured on the instance running HANA. 
 
-* [AWS Secrets Manager] : To allow for reusability of certain parameters, the SSM document will fetch certain inputs from AWS Secrets Manager. The details of the required Secrets can be found in the AWS technical documentation specified in the beginning of this file.
+* [AWS Secrets Manager] : The SSM document will fetch parameter inputs from AWS Secrets Manager. The details of the required Secrets can be found in the AWS technical documentation specified in the beginning of this file.
 
 * [AWS KMS] : To allow the EC2 instances running the SAP HANA workloads to decrypt the content of the Secrets from AWS Secrets Manager, KMS keys are required.
   
